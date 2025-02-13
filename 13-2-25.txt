@@ -104,3 +104,5 @@ WHERE STUDENT_ID= 2;
 15. DELETE FROM STUDENTS_2 WHERE STUDENT_ID = 3;
 
 16. ROLLBACK; - In SQL, the ROLLBACK command is used to undo changes made during the current transaction that have not yet been committed. This command is particularly useful when errors occur or the transaction is aborted, ensuring that the database returns to its previous state by undoing uncommitted changes.
+
+17. COMMIT; - SAVEING CHANGES
