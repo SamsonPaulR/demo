@@ -1,0 +1,18 @@
+git Basic Commands
+	git init - create new local repository
+	git add
+	git reset - unstaging a file
+	git status
+	
+
+
+Git Branching
+	Lightweight movable pointes for different commits
+	default branch name is Master
+
+Git Merging
+
+clone and forking in git
+	
+
+Microsoft azure repose
