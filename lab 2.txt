@@ -1,0 +1,56 @@
+For data privacy, the Retail company wants to mask part of customers’ email addresses. The format should be:
+
+j*****@gmail.com (Mask everything except the first letter and domain).
+
+ 
+Write a query to retreive customerid,email and their masked email.Restrict the query to fetch 100 rows only
+-----------------------------------
+SELECT 
+    customer_id,
+    email,
+    CONCAT(SUBSTR(email, 1, 1), '*****@', SUBSTR(email, LOCATE('@', email) + 1)) AS masked_email
+FROM 
+    Customers
+LIMIT 100;
+--------------------------------------------
+
+
+Problem Statement
+
+The marketing team of the retail store wants to identify customer engagement trends by analyzing how frequently customers place orders. This data will be used to segment customers for personalized marketing campaigns.
+
+Customers who place frequent orders may receive loyalty rewards or exclusive discounts.
+
+Customers who have placed only one or two orders might receive promotional emails encouraging repeat purchases.
+
+Problem Statement:
+Write a SQL query to fetch the customer ID, full name, and total number of orders placed by each customer. The result should include all customers, even those who have never placed an order.Restrict query to fetch 100 rows only.
+
+------------------------------------------------
+
+
+Problem Statement
+
+As part of our ongoing quality assurance and inventory management efforts, we need to identify products that are frequently returned by customers. To address potential quality concerns, generate a report that displays the total number of returns for each product.
+
+The report should include:
+
+The product name to clearly identify the returned items.
+The total number of returns for each product to measure the frequency of returns.
+This information will help our quality control and supply chain teams analyze trends in product returns and take necessary corrective actions, such as improving product quality, updating supplier agreements, or revising return policies.
+
+----------------------------------------------------
+Problem Statement
+
+In the retail industry, understanding customer payment preferences is essential for improving sales strategies, optimizing checkout processes, and enhancing customer experience. This query helps retail businesses analyze which payment methods (e.g., credit card, debit card, cash, PayPal, digital wallets) are most frequently used by customers when placing orders.
+
+Write a SQL query to retrieve the count of orders for each payment method, sorted in descending order of usage.Provide column alias as in output
+
+---------------------------------------------------------------
+Problem Statement
+
+Write a query to retrieve the First name and Last Name of customers who have both a credit card and at least one account with a balance greater than 9800.
+
+
+Instructions
+

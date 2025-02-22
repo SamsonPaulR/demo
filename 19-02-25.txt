@@ -1,0 +1,381 @@
+----------SUB QUERY------------------
+
+SELECT LAST_NAME, SALARY
+FROM EMPLOYEES
+WHERE JOB_ID IN (SELECT JOB_ID
+                 FROM EMPLOYEES
+                 WHERE LAST_NAME = 'Taylor')
+AND SALARY > (SELECT SALARY
+              FROM EMPLOYEES
+              WHERE LAST_NAME = 'Taylor');
+
+-------who gets highest sal--------------------
+
+SELECT FIRST_NAME, SALARY
+FROM EMPLOYEES
+WHERE SALARY = (SELECT MAX(SALARY) FROM EMPLOYEES);
+
+-------------who get the same salary as devies-----------
+
+SELECT LAST_NAME, SALARY
+FROM EMPLOYEES
+WHERE SALARY=(SELECT SALARY FROM EMPLOYEES WHERE LAST_NAME='Devies');
+
+----------------all enames who gets avg sal-------------
+
+SELECT FIRST_NAME
+FROM EMPLOYEES
+WHERE SALARY = (SELECT AVG(SALARY) FROM EMPLOYEES);
+
+----------------all emp who works in same department as davices------------
+
+SELECT FIRST_NAME
+FROM EMPLOYEES
+WHERE DEPARTMENT_ID = (SELECT DEPARTMENT_ID FROM EMPLOYEES WHERE LAST_NAME='Davies');
+ 
+------------------all emp who gets lowest salary------------------------
+
+SELECT FIRST_NAME, SALARY
+FROM EMPLOYEES
+WHERE SALARY = (SELECT MIN(SALARY) FROM EMPLOYEES);
+
+----------------ALL EMP WHO JOINED AFTER DAVIES--------------------
+
+SELECT FIRST_NAME
+FROM EMPLOYEES
+WHERE HIRE_DATE < (SELECT HIRE_DATE FROM EMPLOYEES WHERE LAST_NAME = 'Davice');	
+
+--------------EMP WHO WORKS IN SAME DEPT AS DAVIES AND GETS SALARY MORE THEN HUNOLD-----------------
+
+SELECT FIRST_NAME
+FROM EMPLOYEES
+WHERE DEPARTMENT_ID = (SELECT DEPARTMENT_ID FROM EMPLOYEES WHERE LAST_NAME='Davies') AND SALARY > (SELECT SALARY FROM EMPLOYEES WHERE LAST_NAME='Hunold');
+
+-------------DISPLAY ALL EMP WHO GETS A SALARY GREATER THAN AVE SALARY OF DEPT=20--------------------------
+
+SELECT FIRST_NAME
+FROM EMPLOYEES
+WHERE SALARY > (SELECT AVG(SALARY) FROM EMPLOYEES WHERE DEPARTMENT_ID = 20);
+
+-------------------having clause with subquery-------------------
+
+SELECT DEPARTMENT_ID, MIN(SALARY)
+FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID
+HAVING MIN(SALARY) >
+               (SELECT MIN(SALARY) 
+                FROM EMPLOYEES 
+                WHERE DEPARTMENT_ID = 50);
+
+------------------MULTY ROW SUBQUERY--------------
+
+-------------- ALL EMP WHO GET THE --------------
+
+SELECT FIRST_NAME, SALARY FROM EMPLOYEES
+WHERE SALARY IN (SELECT SALARY FROM EMPLOYEES WHERE LAST_NAME = 'King');
+
+-------------ALL EMP COLLEGES OF PETER AND STEVEN-------------USING IN OPERATOR IN MULTIPLE ROW SUBQUERIES-------------
+
+SELECT FIRST_NAME 
+FROM EMPLOYEES 
+WHERE DEPARTMENT_ID IN (
+    SELECT DEPARTMENT_ID 
+    FROM EMPLOYEES 
+    WHERE FIRST_NAME IN ('Peter', 'Steven')
+);
+        
+-------------------USING ANY OPERATOR-------------------
+
+------------------DISPLAY ALL EMPLYEES GET THE SALARY GERETERTHEN ANY EMP, JOB_ID IS IT_PROG-------------------
+
+SELECT FIRST_NAME, JOB_ID, SALARY
+FROM EMPLOYEES
+WHERE SALARY < ANY (SELECT SALARY FROM EMPLOYEES WHERE JOB_ID = 'IT_PROG')
+AND JOB_ID <> 'IT_PROG';
+
+-------------------DISPLAY ALL EMP WHO GETS A SALARY GREAER THAN ANY EMP OF DEPARTMENT_ID =10------------
+
+SELECT FIRST_NAME
+FROM EMPLOYEES
+WHERE SALARY > ANY (SELECT SALARY
+                    FROM EMPLOYEES
+                    WHERE DEPARTMENT_ID = 10);
+
+-----------------ALL OPERATOR---------------------
+
+
+SELECT FIRST_NAME
+FROM EMPLOYEES
+WHERE SALARY > ALL (SELECT SALARY
+                    FROM EMPLOYEES
+                    WHERE DEPARTMENT_ID = 10);
+
+
+-------ANNONIMUS BLOCK------------
+
+BEGIN
+DBMS_OUTPUT.PUT_LINE('HELLO SAMSON');
+END;
+
+---------------DECLARE AND INITIALIZE VARIABLE--------------
+V_FANE VARCHR(20) NOT NULL :=10;
+
+----------- PROCEDURE BLOCK-----------
+
+
+
+--------------FUNCTION---------------
+
+
+declare 
+V_FNAME EMPLOYEES.FIRST_NAME%TYPE;
+sal NUMBER(10);
+hdate date;
+BEGIN
+SELECT first_name,salary,hire_date
+INTO V_FNAME, sal,hdate  FROM EMPLOYEES
+where employee_id=100;
+dbms_output.put_line('hello welcome '||V_FNAME||' YOUR SALARY IS '|| sal || 'hired on '|| hdate);
+END;
+
+
+sal NUMBER(10) := 'GLOBAL VARIABLE';
+
+
+DECLARE
+    V_OUTER_VARIABLE VARCHAR2(20) :='GLOBAL VARIABLE';
+BEGIN
+    DECLARE
+    V_INNER_VARIABLE VARCHAR2(20) := 'LOCAL VARIABLE';
+    BEGIN
+    DBMS_OUTPUT.PUT_LINE(V_INNER_VARIABLE);
+    DBMS_OUTPUT.PUT_LINE(V_OUTER_VARIABLE);
+    END;
+  DBMS_OUTPUT.PUT_LINE(V_OUTER_VARIABLE);
+END;
+
+DECLARE
+    V_OUTER_VARIABLE VARCHAR2(20) := 'GLOBAL VARIABLE';
+BEGIN
+    DECLARE
+        V_INNER_VARIABLE VARCHAR2(20) := 'LOCAL VARIABLE';
+    BEGIN
+        DBMS_OUTPUT.PUT_LINE(V_INNER_VARIABLE);
+        DBMS_OUTPUT.PUT_LINE(V_OUTER_VARIABLE);
+    END; -- End of inner block
+    DBMS_OUTPUT.PUT_LINE(V_OUTER_VARIABLE);
+END; -- End of outer block
+
+--------------variable on department_no ---------------
+
+DECLARE
+     E_ID NUMBER(30) := 7836;
+BEGIN
+DELETE FROM EMPLOYEES WHERE EMPLOYEE_ID = E_ID;
+END;
+
+BEGIN <<OUTER>>
+BEGIN
+     DECLARE
+            V_SAL NUMBER(7,2) := 60000;
+            V_COMM NUMBER(7,2) := V_SAL * 0.20;
+
+----------------LOOPCOUNT-------------------
+
+DECLARE
+LOOPCOUNT NUMBER := 1;
+BEGIN
+LOOPCOUNT := LOOPCOUNT + 100;
+DBMS_OUTPUT.PUT_LINE(LOOPCOUNT);
+END;
+
+---------------------IF ELSE-----------------
+DECLARE
+    V_MYAGE NUMBER :=22;
+BEGIN
+    IF V_MYAGE < 11
+    THEN
+        DBMS_OUTPUT.PUT_LINE(' I AM A CHILD');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('I AM NOT A CHILD');
+    END IF;
+END;
+
+---------------------IF ELSIF ELSE-----------------------
+
+DECLARE
+    V_MYAGE NUMBER :=22;
+BEGIN
+    IF V_MYAGE < 11
+    THEN
+        DBMS_OUTPUT.PUT_LINE(' I AM A CHILD');
+    ELSIF V_MYAGE <20
+    THEN
+        DBMS_OUTPUT.PUT_LINE('I AM YOUNG');
+    ELSIF V_MYAGE <30
+    THEN
+        DBMS_OUTPUT.PUT_LINE('I AM IN MY 20');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('I AM A OLD MAN');
+    END IF;
+END;
+
+------------------- SALARY GRADE---------------------
+DECLARE
+    V_SALARY NUMBER :=2200;
+BEGIN
+    IF V_SALARY < 2000
+    THEN
+        DBMS_OUTPUT.PUT_LINE(' C');
+    ELSIF V_SALARY >2000 AND V_SALARY < 50000
+    THEN
+        DBMS_OUTPUT.PUT_LINE('B');
+    ELSIF V_SALARY >5000 AND V_SALARY < 100000
+    THEN
+        DBMS_OUTPUT.PUT_LINE('A');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('YOUR SALARY ABOVE 100000');
+    END IF;
+END;
+
+-----------------------------------------------
+
+DECLARE
+    V_SALARY NUMBER :=2200;
+BEGIN
+    IF V_SALARY BETWEEN 0 AND 2000
+    THEN
+        DBMS_OUTPUT.PUT_LINE(' C');
+    ELSIF V_SALARY BETWEEN 2000 AND 5000
+    THEN
+        DBMS_OUTPUT.PUT_LINE('B');
+    ELSIF V_SALARY BETWEEN 5000 AND 10000
+    THEN
+        DBMS_OUTPUT.PUT_LINE('A');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('YOUR SALARY ABOVE 100000');
+    END IF;
+END;
+
+------------------------------CASE-------------------------------
+
+DECLARE
+    V_GRADE CHAR(1) := 'A';
+    V_APPRAISAL VARCHAR2(20);
+BEGIN
+    V_APPRAISAL := CASE V_GRADE
+                   WHEN 'A' THEN 'EXCELLENT'
+                   WHEN 'B' THEN 'VERY GOOD'
+                   WHEN 'C' THEN 'GOOD'
+                   ELSE 'NO SUCH GRADE'
+                   END;
+    DBMS_OUTPUT.PUT_LINE('GRADE: ' || V_GRADE || ' APPRAISAL: ' || V_APPRAISAL);
+END;
+
+------------------------
+
+DECLARE
+    V_DEPARTMENT_ID NUMBER;
+    V_DEPARTMENT_NAME VARCHAR2(20);
+    V_EMPS NUMBER;
+    V_MNGID NUMBER := 108;
+BEGIN
+    CASE V_MNGID
+        WHEN 108 THEN
+            SELECT DEPARTMENT_ID, DEPARTMENT_NAME
+            INTO V_DEPARTMENT_ID, V_DEPARTMENT_NAME
+            FROM DEPARTMENTS
+            WHERE MANAGER_ID = 108;
+            
+            SELECT COUNT(*) INTO V_EMPS
+            FROM EMPLOYEES
+            WHERE DEPARTMENT_ID = V_DEPARTMENT_ID;
+        WHEN 2000 THEN
+            -- Additional logic for manager_id 2000
+            NULL;  -- Placeholder statement
+    END CASE;
+    
+    DBMS_OUTPUT.PUT_LINE('YOU ARE WORKING IN THE ' || V_DEPARTMENT_NAME || ' DEPARTMENT. THERE ARE ' || V_EMPS || ' EMPLOYEES IN THIS DEPARTMENT');
+END;
+
+-----------------LOOP---------------------
+
+DECLARE
+    LOOPCOUNT NUMBER := 1;
+BEGIN
+    LOOP
+        DBMS_OUTPUT.PUT_LINE(LOOPCOUNT);
+        LOOPCOUNT := LOOPCOUNT + 1;
+        EXIT WHEN LOOPCOUNT > 10;
+    END LOOP;
+END;
+
+------------------------------------
+
+CREATE TABLE LOCA(
+      LOCATION_ID NUMBER,
+      CITY VARCHAR(50),
+      COUNTRY_ID NUMBER
+);
+
+
+---------------------
+
+DECLARE
+    V_LOCATION_ID LOCA.LOCATION_ID%TYPE := 1;
+    V_CITY LOCA.CITY%TYPE := 'CA';
+    V_COUNTRY_ID LOCA.COUNTRY_ID%TYPE := '10';
+    V_COUNTER NUMBER := 0;
+BEGIN
+    SELECT MAX(LOCATION_ID) INTO V_LOCATION_ID FROM LOCA
+    WHERE COUNTRY_ID = V_COUNTRY_ID;
+
+    LOOP
+        INSERT INTO LOCA (LOCATION_ID, CITY, COUNTRY_ID) VALUES (V_LOCATION_ID, V_CITY, V_COUNTRY_ID);
+        V_COUNTER := V_COUNTER + 1;
+        EXIT WHEN V_COUNTER > 3;
+    END LOOP;
+END;
+
+-----------------------SUM OF 10 NUMBERS-------------
+
+DECLARE
+    LOOPCOUNT NUMBER := 1;
+    SUM_NUMBERS NUMBER := 0;
+BEGIN
+    LOOP
+        DBMS_OUTPUT.PUT_LINE('The sum of '|| LOOPCOUNT ||' numbers is ' || SUM_NUMBERS);
+        SUM_NUMBERS := SUM_NUMBERS + LOOPCOUNT;
+        LOOPCOUNT := LOOPCOUNT + 1;
+        EXIT WHEN LOOPCOUNT > 10;
+    END LOOP;
+END;
+----------------------WHILE LOOP--------------------
+
+DECLARE
+  i NUMBER := 1;  -- Variable to keep track of the loop iteration
+  total_sum NUMBER := 0;  -- Variable to store the sum
+BEGIN
+  WHILE i <= 10 LOOP  -- Loop from 1 to 10
+     -- Output the result
+  DBMS_OUTPUT.PUT_LINE('The sum of the '||I||' first ten numbers is: ' || total_sum);
+    total_sum := total_sum + i;  -- Add the current value of i to the sum
+    i := i + 1;  -- Increment the loop counter
+  END LOOP;
+END;
+
+--------------------FOR LOOP------------------------
+
+DECLARE
+  total_sum NUMBER := 0;  -- Variable to store the sum
+BEGIN
+  FOR i IN 1..10 LOOP  -- Loop from 1 to 10
+    -- Output the result for each iteration
+    DBMS_OUTPUT.PUT_LINE('The sum of the first ' || i || ' numbers is: ' || total_sum);
+    total_sum := total_sum + i;  -- Add the current value of i to the sum
+  END LOOP;
+
+  -- Output the final result
+  DBMS_OUTPUT.PUT_LINE('The sum of the first ten numbers is: ' || total_sum);
+END;
+

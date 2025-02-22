@@ -1,0 +1,87 @@
+Statement
+The retail marketing team is preparing a campaign to send special birthday wishes to random customers.
+They want to target customers whose email address contains the string "on@" and ends with the ".net" domain.
+For each of these customers, they need to retrieve the following details:
+
+customer_name
+email
+address
+ 
+
+ ------------
+SELECT customer_name, email, address
+FROM CUSTOMERS
+WHERE email LIKE '%on@%' AND email LIKE '%.net';
+-------------------
+
+Statement
+Customer loyalty is critical for business success.
+Customers accumulate loyalty points based on their transactions,
+which determine their loyalty level. Write a query to classify customers into three loyalty levels based on their loyalty_points:
+
+Gold: Customers with 400 or more loyalty points. These customers are considered premium customers and receive special benefits.
+Silver: Customers with loyalty points between 200 and 399. These customers are considered regular customers with some benefits.
+Bronze: Customers with 199 or less loyalty points. These customers are new or infrequent shoppers.
+The query should retrieve:
+
+customer_id,
+first_name,
+last_name,
+loyalty_points, and
+the derived loyalty_level (Gold, Silver, Bronze) for all customers whose last name ends with son.
+
+--------------------------
+
+select customer_id,first_name,last_name,loyalty_points,
+case 
+   when loyalty_points>400 then 'Gold'
+   when loyalty_points between 200 and 399 then 'Silver'
+   when loyalty_points<199 then 'Bronze'
+end as loyalty_points
+from Customers
+where last_name like '%son';
+---------------------------------
+
+Problem Statement
+
+You are analyzing order data for specific customers in a retail business. Retrieve information from the Orders table for all orders placed by customers with customer_id 95 or 2.
+
+For each order, the query should include the following columns:
+
+order_id: The unique identifier for the order.
+customer_id: The ID of the customer who placed the order.
+order_amount: The total monetary value of the order.
+order_date: The date when the order was placed.
+order_status: The current status of the order (e.g., "Pending", "Delivered").
+A derived column named order_category that categorizes each order based on the order_amount:
+High Value: Orders with an amount of 4000 or more.
+Medium Value: Orders with an amount between 2000 and 3999.
+Low Value: Orders with an amount below 2000.
+Additionally, filter the results to include only orders from the specified customers (95 and 2).
+
+The output should be sorted:
+
+Primarily in descending order of order_amount to prioritize higher-value orders.
+Secondarily by order_date in ascending order for orders with the same value, showing the oldest orders first.
+-------------------------------------
+SELECT order_id, 
+       customer_id, 
+       order_amount, 
+       order_date, 
+       order_status,
+       CASE 
+           WHEN order_amount >= 4000 THEN 'High Value'
+           WHEN order_amount BETWEEN 2000 AND 3999 THEN 'Medium Value'
+           ELSE 'Low Value'
+       END AS order_category
+FROM Orders
+WHERE customer_id IN (95, 2)
+ORDER BY order_amount DESC, order_date ASC;
+-----------------------------------------------
+Problem Statement
+
+The retail management team needs to retrieve details of orders for analysis. They are specifically looking for orders placed by customers with IDs 95, 2, or 51, and that have an order status of either 'Delivered' or 'Shipped'. Additionally, they want the results to be sorted as follows:
+
+Orders should be ordered primarily by the order_date in descending order, so the most recent orders appear first.
+If multiple orders were placed on the same date, they should be further sorted by the order_amount in ascending order.
+----------------------------------------

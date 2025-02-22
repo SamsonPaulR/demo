@@ -1,0 +1,206 @@
+----------------- CREATE PROCEDURE WHO GET THE SAME EMP-NAME AND SALARY ---------------------------------
+
+CREATE OR REPLACE PROCEDURE employee(
+    empid IN NUMBER,
+    ename OUT VARCHAR2,
+    salary OUT NUMBER
+)
+AS
+    details EMPLOYEES%ROWTYPE;
+BEGIN
+    SELECT employee_id, first_name, salary 
+    INTO details.employee_id, ename, details.salary
+    FROM employees
+    WHERE employee_id = empid;
+    salary := details.salary; 
+
+END;
+
+
+
+DECLARE
+    ename VARCHAR2(20);
+    salary NUMBER;
+BEGIN
+    employee(100, ename, salary);
+    DBMS_OUTPUT.PUT_LINE('Employee Name=' || ename);
+    DBMS_OUTPUT.PUT_LINE('Employee Salary=' || salary);
+END;
+
+-------------------------------EXCEPTION IN PROCEDURE-------------------------------
+
+CEREATE OR REPLACE PROCEDURE CHECK_SALARY(EMP_ID IN NUMBER) IS
+MIN_SALARY CONSTANT NUMBER := 5000;
+EMP_SALARY NUMBER;
+SALARY_TOO_LOW EXCEPTION;
+
+BEGIN
+ SELECT SALARY INTO EMP_SALARY
+ FROM EMPLOYEES
+ WHERE EMPLOYEE_ID = EMP_ID;
+  
+ IF EMP_SALARY < MIN_SALARY THEN
+     RAISE SALARY_TOO_LOW;
+ ELSE
+     DBMS_OUTPUT.PUT_LINE('SALARY IS SUFFIENT');
+ END IF;
+
+EXCEPTION
+   WHEN SALARY_TOO_LOW THEN
+   DBMS_OUTPUT.PUT_LINE('SALARY IS LOW');
+END;
+
+BEGIN
+ EMP_ID(104);
+
+END;
+
+-----------------------FUNCTIONS---------------------------
+
+CREATE OR REPLACE FUNCTION CALCULATE_FACTORIAL (N IN NUMBER) RETURN NUMBER IS 
+FACT NUMBER := 1;
+BEGIN 
+   FOR I IN 1..N LOOP
+      FACT := FACT* I;
+   END LOOP;
+   RETURN FACT;
+END;
+
+
+
+DECLARE
+NUM NUMBER;
+ BEGIN
+     NUM:=CALCULATE_FACTORIAL(5);
+     DBMS_OUTPUT.PUT_LINE('THE FACTORIAL IS:' || NUM);
+END;
+
+
+--------------------------------WRITE A FUNCTION WHICH APCEPPTS THE EMP_ID AND RETURNS IN FIRST_NAME------------
+
+CREATE OR REPLACE FUNCTION SHOW_NAME(ID NUMBER) RETURN VARCHAR2 AS
+   E_NAME VARCHAR2(30);
+BEGIN 
+   SELECT NAME INTO E_NAME 
+   FROM EMP 
+   WHERE E_ID = ID;
+
+   RETURN E_NAME;
+END;
+
+
+DECLARE
+   E_NAME VARCHAR2(30);
+BEGIN
+   E_NAME := SHOW_NAME(101);
+   DBMS_OUTPU T.PUT_LINE('THE NAME IS: ' || E_NAME);
+END;
+/
+
+---------------------------BOOLEAN-----------------------------
+
+CREATE OR REPLACE FUNCTION CHECH_SALARY RETURN BOOLEAN IS
+V_DEPT_ID = 
+
+
+-----------------------------------------trigger------------------
+
+create table customer(
+empid number,
+ename varchar(20)
+);
+
+
+CREATE OR REPLACE TRIGGER nonnullinsert
+BEFORE INSERT ON customer
+FOR EACH ROW
+BEGIN
+   IF :NEW.ename IS NULL THEN
+      :NEW.ename := 'RANI';
+   ELSE
+      :NEW.ename := UPPER(:NEW.ename);
+   END IF;
+END;
+
+
+insert into customer
+values(101, 'ben');a
+
+select * from customer;
+
+--------------------------------------------------
+create table reminder
+( Id number(5), description varchar(35));
+
+create table customermaster(
+empid number,
+ename varchar(20),
+hiredate date);
+
+create or replace trigger afterinsert_trigger1
+after insert on customermaster for each row
+begin
+if :new.hiredate is null then
+insert into reminder
+values(:new.empid,concat('hi ' || :new.ename, ' pls update hiredate'));
+end if;
+end;
+
+
+insert into customermaster
+values(101,'ram',null)
+
+select * from reminder
+
+------------------------- create a backup table--------------------
+
+create table customerbackup as (select empid, ename, hiredate from customermaster);
+
+CREATE TRIGGER customerbackuptrigger_1
+BEFORE UPDATE ON customermaster
+FOR EACH ROW
+BEGIN
+  INSERT INTO customerbackup
+  VALUES (:OLD.empid, :OLD.ename, :OLD.hiredate);
+END;
+
+
+UPDATE customermaster
+SET ename='shyam'
+WHERE empid=100;
+
+
+select * from customerbackup
+
+
+-------------------------------------
+
+create table empl(
+id number,
+salary number(20),
+hiredate date);
+
+create table salary_log(
+employee_id number,
+old_salary number,
+new_salary number,
+change_date date);
+
+insert into empl
+values(100,7000,'02/02/2025');
+
+select * from empl
+
+create or replace TRIGGER after_update_salary
+AFTER UPDATE ON empl
+FOR EACH ROW
+BEGIN
+    insert into salary_log (employee_id, old_salary, new_salary, change_date)
+    VALUES (:NEW.id, :OLD.salary, :NEW.salary, SYSDATE);
+END;
+
+
+update empl
+set salary = 10000 where id = 100
+
+select * from salary_log
