@@ -1,0 +1,11 @@
+C:\Users\Admin>netstat -ano | findstr :<portno>
+The syntax of the command is incorrect.
+
+C:\Users\Admin>netstat -ano | findstr :8081
+  TCP    0.0.0.0:8081           0.0.0.0:0              LISTENING       16484
+  TCP    [::]:8081              [::]:0                 LISTENING       16484
+
+C:\Users\Admin>taskkill /F /PID 16484
+SUCCESS: The process with PID 16484 has been terminated.
+
+C:\Users\Admin>
