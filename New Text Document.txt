@@ -1,0 +1,81 @@
+https://chatgpt.com/share/67d27909-52a8-8003-955c-f421640307e2
+
+
+
+https://www.youtube.com/watch?v=_spDdYXgCLc&list=PLgWpUXNR_WCeDEM-XXHm_mXAuPYEDl4Ij
+
+
+https://countries.trevorblades.com/  - Graph Ql 
+
+
+https://www.youtube.com/watch?v=If1Lw4pLLEo   - spring core
+
+
+
+spring mvc
+
+	right clik the project target and go to property and target-runtime and add suitable appache server 
+
+
+
+to kill app running on port
+netstat -ano | findstr  portno
+taskkill /f /pid   number                  //how to kill port
+
+
+
+
+
+
+
+https://legacy.reactjs.org/docs/cdn-links.html
+
+
+
+https://www.youtube.com/watch?v=eK3xJpoqNDs     --- spring boot jpa
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+project-root/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com.example.project/
+│   │   │       ├── controller/       # REST controllers to handle HTTP requests
+│   │   │       ├── model/            # Domain models (e.g., entities)
+│   │   │       ├── repository/       # Repositories for database operations
+│   │   │       ├── service/          # Business logic/services
+│   │   │       └── ProjectApplication.java  # Main entry point of the application
+│   │   ├── resources/
+│   │   │   ├── static/               # Static resources like HTML, CSS, JS
+│   │   │   ├── templates/            # Thymeleaf or other templating files (if needed)
+│   │   │   ├── application.properties  # Configuration file
+│   │   │   └── application.yml         # Alternative configuration file (optional)
+│   │   └── webapp/
+│   │       ├── css/                  # Front-end styling
+│   │       ├── js/                   # JavaScript files
+│   │       └── index.html            # Front-end entry point
+│   └── test/
+│       └── java/
+│           └── com.example.project/
+│               ├── controller/       # Unit tests for controllers
+│               ├── service/          # Unit tests for services
+│               └── ProjectApplicationTests.java  # Main test class
+├── build.gradle OR pom.xml           # Build configuration (Gradle/Maven)
+├── .gitignore                        # Git ignore file
+├── README.md                         # Documentation for the project
+└── Dockerfile (optional)             # Docker configuration for containerization
